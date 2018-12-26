@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>车辆信息保存</title>
+    <base href="/"/>
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <form id="myFrm" role="form">
+        <div class="form-group">
+            <label>品牌:</label>
+            <label><input type="text" name="brand" value="" class="form-control" /></label>
+        </div>
+        <div class="form-group">
+            <label>价格:</label>
+            <label><input type="text" name="price" value="" class="form-control" /></label>
+        </div>
+        <div class="form-group">
+            <input type="button" value="提交" class="btn btn-default" onclick="checkForm()"/>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="js/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function checkForm() {
+        var brand = $('#myFrm').find('input[name="brand"]').val();
+        console.log('brand='+brand);
+        var price = $('#myFrm').find('input[name="price"]').val();
+        console.log('price='+price);
+
+        var jsonObj = {
+            "brand" : brand,
+            "price" : price
+        };
+        var url = '/order/saveVehicle';
+        $.ajax({
+            url : url,
+            type : 'POST',//必须使用 POST
+            dataType : "JSON",//保证了jQuery Ajax会把后端的响应内容(@ResponseBody)进行JSON解析变成一个JSON对象
+            //contentType : 'application/json',//告诉服务端我发送的请求正文是一个JSON字符串
+            data : jsonObj,//jsonString,//必须是一个JSON字符串
+            success : function(response) {
+                //console.log(response);
+                if (response.code === 200) {
+                    //跳转到列表页
+                    //location = '/views/html/order/vehicle-list.html';//location.href window.location window.location.href
+                    window.open('/views/html/order/vehicle-list.html');
+                } else {
+                    console.log(response);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

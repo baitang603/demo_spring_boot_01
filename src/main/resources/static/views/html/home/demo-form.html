@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Bootstrap表单</title>
+    <base href="/"/>
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <form id="myFrm" role="form">
+        <div class="form-group">
+            <label>姓名:</label>
+            <label><input type="text" name="name" value="小强" class="form-control" onblur="checkName(this.value)"/></label>
+        </div>
+        <div class="form-group">
+            <label>省份:</label>
+            <label>
+                <select name="province" class="form-control">
+                    <option value="0">河北省</option>
+                    <option value="1">山东省</option>
+                    <option value="2" selected="selected">山西省</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>性别:</label>
+            <label><input type="radio" name="sex" value="0" checked="checked"/>男</label>
+            <label><input type="radio" name="sex" value="1"/>女</label>
+        </div>
+        <div class="form-group">
+            <label>爱好:</label>
+            <label><input type="checkbox" name="hobby" value="0" checked="checked"/>吃</label>
+            <label><input type="checkbox" name="hobby" value="1"/>睡</label>
+        </div>
+        <div class="form-group">
+            <input type="button" value="提交" class="btn btn-default" onclick="checkFormV1()"/>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="js/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function checkName(name) {
+        if (!name) {
+            alert('姓名不能为空');
+        }
+    }
+    function checkFormV1() {
+        var sexarr = document.getElementsByName('sex');
+        for (var i = 0; i < sexarr.length; i++) {
+            var domObj = sexarr[i];
+            var val = domObj.value;
+            //console.log('性别=' + val);
+        }
+        var myfrm = document.getElementById('myFrm');
+        var sex = myfrm.sex.value;
+        console.log('sex='+sex);
+        var name = myfrm.name.value;
+        console.log('name='+name);
+        var prov = myfrm.province.value;
+        console.log('prov='+prov);
+        var hobbyarr = myfrm.hobby;//多选按钮的value和其他的不太一样要注意
+        var hobbies = [];
+        for (var i = 0; i < hobbyarr.length; i++) {
+            var domObj = hobbyarr[i];
+            var val = domObj.value;
+            if (domObj.checked) {//核心代码
+                hobbies.push(val);
+            }
+            //console.log('hobby_val='+val);
+        }
+        console.log(hobbies);
+
+         var myid = 1;
+         var myname = '伊丽莎白';
+         var mysalary = 200.0;
+
+
+        var url = '/home/parambind';
+         var method = 'GET';//GET
+
+         $.ajax({
+         url : url,
+         type : method,
+         data : {
+         id : myid,
+         name : myname,
+         salary : mysalary
+         },
+         success : function(response) {
+         console.log(response);
+         }
+         });
+
+       /* var personJson = {
+            "name" : name,
+            "province" : prov,
+            "sex" : sex,
+            "hobbyList" : hobbies
+        };
+
+        var jsonString = JSON.stringify(personJson);//JSON是一个全局对象 eval() -> JSON.parse(jsonString)
+
+        //var url = '/home/complexbind';
+        var url = '/home/returnValueBind';
+        $.ajax({
+            url : url,
+            type : 'POST',//必须使用 POST
+            dataType : "JSON",//保证了jQuery Ajax会把后端的响应内容(@ResponseBody)进行JSON解析变成一个JSON对象
+            contentType : 'application/json',//告诉服务端我发送的请求正文是一个JSON字符串
+            data : jsonString,//必须是一个JSON字符串
+            success : function(response) {
+                console.log(response);
+            }
+        });*/
+    }
+    function checkForm() {
+        var name = $('#myFrm').find('input[name="name"]').val();
+        console.log('name='+name);
+        var province = $('#myFrm').find('select[name="province"]').val();
+        console.log('province='+province);
+        var sex = $('#myFrm').find('input[name="sex"]:checked').val();
+        console.log('sex='+sex);
+        var hobbies = [];
+        $('#myFrm').find('input[name="hobby"]:checked').each(function() {
+            var hobby = $(this).val();
+            hobbies.push(hobby);
+        });
+        console.log(hobbies);
+
+       /* var personJson = {
+            "name" : name,
+            "province" : province,
+            "sex" : sex,
+            "hobbyList" : hobbies
+        };
+        var jsonString = JSON.stringify(personJson);
+        var url = '/home/returnValueBind';
+        $.ajax({
+            url : url,
+            type : 'POST',//必须使用 POST
+            dataType : "JSON",//保证了jQuery Ajax会把后端的响应内容(@ResponseBody)进行JSON解析变成一个JSON对象
+            contentType : 'application/json',//告诉服务端我发送的请求正文是一个JSON字符串
+            data : jsonString,//必须是一个JSON字符串
+            success : function(response) {
+                console.log(response);
+            }
+        });*/
+
+    }
+</script>
+</body>
+</html>

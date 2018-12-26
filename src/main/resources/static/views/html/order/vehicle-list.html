@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>车辆列表</title>
+    <base href="/">
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">车辆列表</div>
+    <div class="panel-body">
+        <p>车辆列表描述内容</p>
+    </div>
+
+    <!-- Table -->
+    <table id="myTable" class="table">
+        <thead>
+        <tr>
+            <th>车辆ID</th>
+            <th>品牌</th>
+            <th>价格</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>张三</td>
+            <td>男</td>
+            <td>计算机网络</td>
+        </tr>
+        <tr>
+            <td>李四</td>
+            <td>男</td>
+            <td>中文文学</td>
+        </tr>
+        <tr>
+            <td>刘雅</td>
+            <td>女</td>
+            <td>法学</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript" src="js/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var vehicleJson = {};
+        var jsonString = JSON.stringify(vehicleJson);
+        var url = '/order/getVehicleList';
+        $.ajax({
+            url : url,
+            type : 'GET',//必须使用 POST
+            dataType : "JSON",//保证了jQuery Ajax会把后端的响应内容(@ResponseBody)进行JSON解析变成一个JSON对象
+            //contentType : 'application/json',//告诉服务端我发送的请求正文是一个JSON字符串
+            data : jsonString,//必须是一个JSON字符串
+            success : function(response) {
+                //console.log(response);
+                if (response.code === 200) {
+                    var str = '';
+                    var vehicleArr = response.result;
+                    for (var i = 0; i < vehicleArr.length; i++) {
+                        var o = vehicleArr[i];
+                        //console.log(o.id + ' - '+o.name + ' - '+o.price);
+                        str += '<tr><td>'+o.id+'</td><td>'+o.name+'</td><td>'+o.price+'</td></tr>'
+                    }
+                    $('#myTable').find('tbody').html(str);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
